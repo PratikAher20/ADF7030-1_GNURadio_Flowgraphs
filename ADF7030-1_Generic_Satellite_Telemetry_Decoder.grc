@@ -127,7 +127,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1168, 976.0]
+    coordinate: [1512, 1272.0]
     rotation: 0
     state: true
 - name: blocks_multiply_xx_0
@@ -373,7 +373,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1440, 1132.0]
+    coordinate: [1400, 1132.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_0_0_1_0
@@ -598,9 +598,40 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [832, 840.0]
+    coordinate: [792, 856.0]
     rotation: 0
     state: disabled
+- name: satellites_crc_check_0_0
+  id: satellites_crc_check
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: 'Always Use CRC Block from gr_satellite OOT.
+
+      The CRC Block from GnuRadio has a slight bug in it.
+
+
+      Use the last two bytes of CCSDS Packet as the CRC Check
+
+      value with any polynomial'
+    discard_crc: 'True'
+    final_xor: '0xFFFF'
+    initial_value: '0x0000'
+    input_reflected: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_bits: '16'
+    poly: '0x3D65'
+    result_reflected: 'False'
+    skip_header_bytes: '0'
+    swap_endianness: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1256, 1256.0]
+    rotation: 0
+    state: enabled
 - name: satellites_fsk_demodulator_1
   id: satellites_fsk_demodulator
   parameters:
@@ -685,10 +716,11 @@ connections:
   '0']
 - [low_pass_filter_0, '0', qtgui_freq_sink_x_0_0_1_0, '0']
 - [low_pass_filter_0, '0', rational_resampler_xxx_0, '0']
-- [pdu_tagged_stream_to_pdu_0, pdus, blocks_message_debug_0, print]
+- [pdu_tagged_stream_to_pdu_0, pdus, satellites_crc_check_0_0, in]
 - [rational_resampler_xxx_0, '0', analog_quadrature_demod_cf_1, '0']
 - [satellites_crc_check_0, fail, blocks_message_debug_0, print]
 - [satellites_crc_check_0, ok, blocks_message_debug_0, print]
+- [satellites_crc_check_0_0, ok, blocks_message_debug_0, print]
 - [satellites_fsk_demodulator_1, '0', digital_binary_slicer_fb_0, '0']
 - [satellites_fsk_demodulator_1, '0', qtgui_time_sink_x_1_0, '0']
 - [satellites_sync_to_pdu_packed_0, out, satellites_crc_check_0, in]
